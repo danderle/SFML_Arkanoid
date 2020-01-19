@@ -3,7 +3,8 @@
 Game::Game(const int width, const int height, const std::string& title)
 	: 
 	window(sf::VideoMode(width, height), title),
-    board((float)width, (float)height)
+    board((float)width, (float)height),
+    ball({ (float)width / 2, (float)height * (4.f / 5.f) })
 {
 }
 
@@ -32,4 +33,5 @@ void Game::UpdateModel()
 void Game::DrawFrame()
 {
     board.Draw(window);
+    ball.Draw(window);
 }

@@ -1,8 +1,8 @@
 #pragma once
-#include <SFML/Graphics.hpp>
-
 #include <iostream>
+#include <SFML/Graphics.hpp>
 #include "Board.h"
+#include "Ball.h"
 
 class Game
 {
@@ -17,6 +17,6 @@ public:
 private:
 	sf::RenderWindow window;
 	Board board;
-
+	Ball ball;
 };
 
