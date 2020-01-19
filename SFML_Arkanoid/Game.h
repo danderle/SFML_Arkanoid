@@ -18,5 +18,6 @@ private:
 	sf::RenderWindow window;
 	Board board;
 	Ball ball;
+	sf::Clock clock;
 };
 

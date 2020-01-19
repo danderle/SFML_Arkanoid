@@ -28,6 +28,9 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
+    auto dt = clock.restart();
+    ball.Update(dt.asSeconds());
+    board.CheckWallCollision(ball);
 }
 
 void Game::DrawFrame()
