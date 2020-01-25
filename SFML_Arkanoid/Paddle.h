@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include "Ball.h"
 
 class Paddle
 {
@@ -10,6 +11,7 @@ public:
 	void Draw(sf::RenderWindow& wnd);
 	sf::Vector2f GetPosition() const;
 	void SetOuterPaddlePosition(sf::Vector2f& curPos);
+	void CheckBallCollision(Ball& ball);
 
 private: 
 	void SetInnerPaddlePosition(const sf::Vector2f outerPos);

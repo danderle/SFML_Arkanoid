@@ -34,6 +34,7 @@ void Game::UpdateModel()
     board.CheckWallCollision(ball);
     paddle.Update(keybrd, dt.asSeconds());
     board.CheckWallCollision(paddle);
+    paddle.CheckBallCollision(ball);
 }
 
 void Game::DrawFrame()

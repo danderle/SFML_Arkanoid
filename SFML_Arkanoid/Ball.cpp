@@ -2,7 +2,7 @@
 
 Ball::Ball(const sf::Vector2f pos)
 	:
-	circle({radius}),
+	circle({Radius}),
 	velocity(1,-1)
 {
 	circle.setPosition(pos);
@@ -36,4 +36,40 @@ void Ball::DoWallCollision(const sf::Vector2i vel, const sf::Vector2f pos)
 sf::Vector2f Ball::GetPosition() const
 {
 	return circle.getPosition();
+}
+
+sf::Vector2f Ball::GetCenter() const
+{
+	auto pos = circle.getPosition();
+	return sf::Vector2f(pos.x + Radius, pos.y + Radius);
+}
+
+sf::FloatRect Ball::GetRect() const
+{
+	return circle.getGlobalBounds();
+}
+
+sf::Vector2i Ball::GetVelocity() const
+{
+	return velocity;
+}
+
+void Ball::ResetX(const float x)
+{
+	circle.setPosition({x, GetPosition().y});
+}
+
+void Ball::ResetY(const float y)
+{
+	circle.setPosition({ GetPosition().x, y });
+}
+
+void Ball::ReboundX()
+{
+	velocity.x *= -1;
+}
+
+void Ball::ReboundY()
+{
+	velocity.y *= -1;
 }

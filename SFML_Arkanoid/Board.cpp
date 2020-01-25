@@ -20,10 +20,10 @@ void Board::Draw(sf::RenderWindow& wnd)
 void Board::CheckWallCollision(Ball& ball)
 {
 	auto pos = ball.GetPosition();
-	sf::Vector2f LeftBallPos(pos.x - Padding, pos.y + Ball::radius - Padding);
-	sf::Vector2f topBallPos(pos.x + Ball::radius - Padding, pos.y - Padding);
-	sf::Vector2f bottomBallPos(pos.x + Ball::radius + Padding, pos.y + Ball::Diameter + Padding);
-	sf::Vector2f rightBallPos(pos.x + Ball::Diameter + Padding, pos.y + Ball::radius + Padding);
+	sf::Vector2f LeftBallPos(pos.x - Padding, pos.y + Ball::Radius - Padding);
+	sf::Vector2f topBallPos(pos.x + Ball::Radius - Padding, pos.y - Padding);
+	sf::Vector2f bottomBallPos(pos.x + Ball::Radius + Padding, pos.y + Ball::Diameter + Padding);
+	sf::Vector2f rightBallPos(pos.x + Ball::Diameter + Padding, pos.y + Ball::Radius + Padding);
 	
 	sf::Vector2i vel(1, 1);
 	if (!background.getGlobalBounds().contains(LeftBallPos))
