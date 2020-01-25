@@ -1,10 +1,11 @@
 #include "Game.h"
 
-Game::Game(const int width, const int height, const std::string& title)
+Game::Game(const std::string& title)
 	: 
-	window(sf::VideoMode(width, height), title),
-    board((float)width, (float)height),
-    ball({ (float)width / 2, (float)height * (4.f / 5.f) })
+	window(sf::VideoMode(WndWidth, WndHeight), title),
+    board((float)WndWidth, (float)WndHeight),
+    ball({ (float)WndWidth / 2, (float)WndHeight * (4.f / 5.f) }),
+    paddle(WndWidth, WndHeight)
 {
 }
 
@@ -31,10 +32,13 @@ void Game::UpdateModel()
     auto dt = clock.restart();
     ball.Update(dt.asSeconds());
     board.CheckWallCollision(ball);
+    paddle.Update(keybrd, dt.asSeconds());
+    board.CheckWallCollision(paddle);
 }
 
 void Game::DrawFrame()
 {
     board.Draw(window);
     ball.Draw(window);
+    paddle.Draw(window);
 }

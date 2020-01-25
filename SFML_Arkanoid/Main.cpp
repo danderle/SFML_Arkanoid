@@ -2,7 +2,7 @@
 
 int main()
 {
-    Game theGame(800,900,"Arkanoid");
+    Game theGame("Arkanoid");
     theGame.Go();
 
     return 0;

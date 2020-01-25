@@ -2,12 +2,14 @@
 
 Board::Board(const float width, const float height)
 	:
-	background({width - 2* padding, height - 2* padding })
+	width(width),
+	height(height),
+	background({width - 2* Padding, height - 2* Padding })
 {
 	background.setFillColor(backgroundFill);
-	background.setOutlineThickness(padding);
+	background.setOutlineThickness(Padding);
 	background.setOutlineColor(sf::Color::Blue);
-	background.setPosition(padding, padding);
+	background.setPosition(Padding, Padding);
 }
 
 void Board::Draw(sf::RenderWindow& wnd)
@@ -18,21 +20,21 @@ void Board::Draw(sf::RenderWindow& wnd)
 void Board::CheckWallCollision(Ball& ball)
 {
 	auto pos = ball.GetPosition();
-	sf::Vector2f LeftBallPos(pos.x - padding, pos.y + Ball::radius - padding);
-	sf::Vector2f topBallPos(pos.x + Ball::radius - padding, pos.y - padding);
-	sf::Vector2f bottomBallPos(pos.x + Ball::radius + padding, pos.y + Ball::Diameter + padding);
-	sf::Vector2f rightBallPos(pos.x + Ball::Diameter + padding, pos.y + Ball::radius + padding);
+	sf::Vector2f LeftBallPos(pos.x - Padding, pos.y + Ball::radius - Padding);
+	sf::Vector2f topBallPos(pos.x + Ball::radius - Padding, pos.y - Padding);
+	sf::Vector2f bottomBallPos(pos.x + Ball::radius + Padding, pos.y + Ball::Diameter + Padding);
+	sf::Vector2f rightBallPos(pos.x + Ball::Diameter + Padding, pos.y + Ball::radius + Padding);
 	
 	sf::Vector2i vel(1, 1);
 	if (!background.getGlobalBounds().contains(LeftBallPos))
 	{
 		vel.x *= -1;
-		pos.x = padding;
+		pos.x = Padding;
 	}
 	else if (!background.getGlobalBounds().contains(topBallPos))
 	{
 		vel.y *= -1;
-		pos.y = padding;
+		pos.y = Padding;
 	}
 	else if (!background.getGlobalBounds().contains(bottomBallPos))
 	{
@@ -47,4 +49,15 @@ void Board::CheckWallCollision(Ball& ball)
 
 	if (vel.x == -1 || vel.y == -1)
 		ball.DoWallCollision(vel, pos);
+}
+
+void Board::CheckWallCollision(Paddle& paddle)
+{
+	auto curPos = paddle.GetPosition();
+	if (curPos.x - Padding < 0)
+		curPos.x = Padding;
+	else if (curPos.x + Paddle::Width + Padding > width)
+		curPos.x = width - Board::Padding - Paddle::Width;
+	
+	paddle.SetOuterPaddlePosition(curPos);
 }
