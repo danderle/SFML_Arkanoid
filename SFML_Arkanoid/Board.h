@@ -10,7 +10,7 @@ public:
 	Board(const float width, const float height);
 
 	void Draw(sf::RenderWindow& wnd);
-	void CheckWallCollision(Ball& ball);
+	bool CheckWallCollision(Ball& ball);
 	void CheckWallCollision(Paddle& paddle);
 
 public:

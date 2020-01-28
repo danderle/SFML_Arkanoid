@@ -4,6 +4,7 @@
 #include "Board.h"
 #include "Ball.h"
 #include "Paddle.h"
+#include "Sound.h"
 
 class Game
 {
@@ -16,7 +17,7 @@ public:
 	void DrawFrame();
 
 public:
-	static constexpr int WndWidth = 800;
+	static constexpr int WndWidth = 1000;
 	static constexpr int WndHeight = 900;
 
 private:
@@ -24,6 +25,7 @@ private:
 	Board board;
 	Ball ball;
 	Paddle paddle;
+	Sound sound;
 	sf::Keyboard keybrd;
 	sf::Clock clock;
 };

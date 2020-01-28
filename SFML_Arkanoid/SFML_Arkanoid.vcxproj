@@ -149,12 +149,23 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Paddle.cpp" />
+    <ClCompile Include="Sound.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Ball.h" />
     <ClInclude Include="Board.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Paddle.h" />
+    <ClInclude Include="Sound.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="Resources\arkbrick.wav" />
+    <Media Include="Resources\arkpad.wav" />
+    <Media Include="Resources\Fart.wav" />
+    <Media Include="Resources\ready.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="Resources\Roboto-Bold.ttf" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -31,10 +31,16 @@ void Game::UpdateModel()
 {
     auto dt = clock.restart();
     ball.Update(dt.asSeconds());
-    board.CheckWallCollision(ball);
+    if (board.CheckWallCollision(ball))
+    {
+        sound.Play(sound.brickfilePath);
+    }
     paddle.Update(keybrd, dt.asSeconds());
     board.CheckWallCollision(paddle);
-    paddle.CheckBallCollision(ball);
+    if (paddle.CheckBallCollision(ball))
+    {
+        sound.Play(sound.padfilePath);
+    }
 }
 
 void Game::DrawFrame()

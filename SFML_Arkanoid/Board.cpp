@@ -17,8 +17,9 @@ void Board::Draw(sf::RenderWindow& wnd)
 	wnd.draw(background);
 }
 
-void Board::CheckWallCollision(Ball& ball)
+bool Board::CheckWallCollision(Ball& ball)
 {
+	bool collision = false;
 	auto pos = ball.GetPosition();
 	sf::Vector2f LeftBallPos(pos.x - Padding, pos.y + Ball::Radius - Padding);
 	sf::Vector2f topBallPos(pos.x + Ball::Radius - Padding, pos.y - Padding);
@@ -48,7 +49,11 @@ void Board::CheckWallCollision(Ball& ball)
 	}
 
 	if (vel.x == -1 || vel.y == -1)
+	{
 		ball.DoWallCollision(vel, pos);
+		collision = true;
+	}
+	return collision;
 }
 
 void Board::CheckWallCollision(Paddle& paddle)

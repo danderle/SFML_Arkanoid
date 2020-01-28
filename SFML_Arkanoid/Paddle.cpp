@@ -42,15 +42,17 @@ void Paddle::SetOuterPaddlePosition(sf::Vector2f& curPos)
 	SetInnerPaddlePosition(curPos);
 }
 
-void Paddle::CheckBallCollision(Ball& ball)
+bool Paddle::CheckBallCollision(Ball& ball)
 {
+	bool ballCollision = false;
 	if (outerPad.getGlobalBounds().intersects(ball.GetRect()))
 	{
+		ballCollision = true;
 		auto ballCenter = ball.GetCenter();
 		auto paddlePos = outerPad.getPosition();
 		auto ballVel = ball.GetVelocity();
-		int y = ballVel.y > 0 ? paddlePos.y - Ball::Diameter : paddlePos.y + Height;
-		int x = ballVel.x > 0 ? paddlePos.x - Ball::Diameter : paddlePos.x + Width;
+		float y = ballVel.y > 0 ? paddlePos.y - Ball::Diameter : paddlePos.y + Height;
+		float x = ballVel.x > 0 ? paddlePos.x - Ball::Diameter : paddlePos.x + Width;
 		if (ballCenter.x > paddlePos.x && ballCenter.x < paddlePos.x + Width)
 		{
 			ball.ResetY(y);
@@ -92,7 +94,7 @@ void Paddle::CheckBallCollision(Ball& ball)
 			}
 		}
 	}
-	
+	return ballCollision;
 }
 
 
