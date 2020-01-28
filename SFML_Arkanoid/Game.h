@@ -13,7 +13,7 @@ public:
 	Game(const std::string& title);
 
 	void Go();
-	void UpdateModel();
+	void UpdateModel(float dt);
 	void DrawFrame();
 
 public:

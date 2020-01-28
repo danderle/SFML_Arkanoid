@@ -63,33 +63,49 @@ bool Paddle::CheckBallCollision(Ball& ball)
 			ball.ResetX(x); 
 			ball.ReboundX();
 		}
-		else if(ballCenter.x < paddlePos.x)
+		else if(ballVel.y > 0)
 		{
-			float x = std::abs(paddlePos.x - ballCenter.x);
-			float y = std::abs(paddlePos.y - ballCenter.y);
+			float x;
+			float y;
+			if (ballCenter.x < paddlePos.x)
+			{
+				x = std::abs(paddlePos.x - ballCenter.x);
+				y = std::abs(paddlePos.y - ballCenter.y);
+			}
+			else
+			{
+				x = std::abs(paddlePos.x + Width - ballCenter.x);
+				y = std::abs(paddlePos.y - ballCenter.y);
+			}
 			if (x <= y)
 			{
-				ball.ResetY(y);
 				ball.ReboundY();
 			}
 			else
 			{
-				ball.ResetX(x);
 				ball.ReboundX();
 			}
 		}
-		else if (ballCenter.x > paddlePos.x + Width)
+		else if (ballVel.y < 0)
 		{
-			float x = std::abs(paddlePos.x + Width - ballCenter.x);
-			float y = std::abs(paddlePos.y + Height - ballCenter.y);
+			float x;
+			float y;
+			if (ballCenter.x < paddlePos.x)
+			{
+				x = std::abs(paddlePos.x - ballCenter.x);
+				y = std::abs(paddlePos.y + Height - ballCenter.y);
+			}
+			else
+			{
+				x = std::abs(paddlePos.x + Width - ballCenter.x);
+				y = std::abs(paddlePos.y + Height - ballCenter.y);
+			}
 			if (x <= y)
 			{
-				ball.ResetY(y);
 				ball.ReboundY();
 			}
 			else
 			{
-				ball.ResetX(x);
 				ball.ReboundX();
 			}
 		}

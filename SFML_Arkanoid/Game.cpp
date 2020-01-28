@@ -21,21 +21,27 @@ void Game::Go()
         }
 
         window.clear();
-        UpdateModel();
+        auto dt = clock.restart();
+        auto elapsedTime = dt.asSeconds();
+        while (elapsedTime > 0)
+        {
+            float step = std::min(0.0025f, elapsedTime);
+            UpdateModel(step);
+            elapsedTime -= step;
+        }
         DrawFrame();
         window.display();
     }
 }
 
-void Game::UpdateModel()
+void Game::UpdateModel(float timeStep)
 {
-    auto dt = clock.restart();
-    ball.Update(dt.asSeconds());
+    ball.Update(timeStep);
     if (board.CheckWallCollision(ball))
     {
         sound.Play(sound.brickfilePath);
     }
-    paddle.Update(keybrd, dt.asSeconds());
+    paddle.Update(keybrd, timeStep);
     board.CheckWallCollision(paddle);
     if (paddle.CheckBallCollision(ball))
     {
