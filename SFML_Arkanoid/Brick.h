@@ -10,7 +10,10 @@ public:
 
 	void Draw(sf::RenderWindow& wnd);
 	bool CheckBallCollision(Ball& ball);
+	void Destroy();
 	bool IsDestroyed() const;
+	float GetDistance(Ball& ball) const;
+	sf::Vector2f GetCenter() const;
 
 public:
 	static constexpr float Width = 90;

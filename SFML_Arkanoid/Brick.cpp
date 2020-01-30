@@ -83,11 +83,32 @@ bool Brick::CheckBallCollision(Ball& ball)
 			}
 		}
 	}
-	destroyed = ballCollision;
 	return ballCollision;
+}
+
+void Brick::Destroy()
+{
+	destroyed = true;
 }
 
 bool Brick::IsDestroyed() const
 {
 	return destroyed;
+}
+
+sf::Vector2f Brick::GetCenter() const
+{
+	auto pos = shape.getPosition();
+	pos.x += Width / 2;
+	pos.y += Height / 2;
+	return pos;
+}
+
+float Brick::GetDistance(Ball& ball) const
+{
+	auto ballcenter = ball.GetCenter();
+	auto center = GetCenter();
+	float x = std::abs(ballcenter.x - center.x);
+	float y = std::abs(ballcenter.y - center.y);
+	return std::sqrt(x * x + y * y);
 }

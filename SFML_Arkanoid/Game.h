@@ -6,6 +6,7 @@
 #include "Paddle.h"
 #include "Sound.h"
 #include "Brick.h"
+#include "Level.h"
 
 class Game
 {
@@ -16,6 +17,9 @@ public:
 	void Go();
 	void UpdateModel(float dt);
 	void DrawFrame();
+
+private:
+	void CheckBricksToDestroy(Ball& ball);
 
 public:
 	static constexpr int WndWidth = 1020;

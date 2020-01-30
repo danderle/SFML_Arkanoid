@@ -7,26 +7,7 @@ Game::Game(const std::string& title)
     ball({ (float)WndWidth / 2, (float)WndHeight * (4.f / 5.f) }),
     paddle(WndWidth, WndHeight)
 {
-    int yStep = -1;
-    sf::Color color(255, 0, 0);
-    for (int i = 0; i < 66; i++)
-    {
-        float x = (i * (int)Brick::Width) % 990 + Board::Padding;
-        if (x == Board::Padding)
-        {
-            yStep++;
-            if (yStep == 1)
-            {
-                color = sf::Color::Green;
-            }
-            else if (yStep == 2)
-            {
-                color = sf::Color::Yellow;
-            }
-        }
-        float y = yStep * Brick::Height + 60;
-        bricks.push_back({ {x,y}, color });
-    }
+    bricks = Level::Create(1);
 }
 
 void Game::Go()
@@ -67,13 +48,7 @@ void Game::UpdateModel(float timeStep)
     {
         sound.Play(sound.padfilePath);
     }
-    for (auto& brick : bricks)
-    {
-        if (!brick.IsDestroyed())
-        {
-            brick.CheckBallCollision(ball);
-        }
-    }
+    CheckBricksToDestroy(ball);
 }
 
 void Game::DrawFrame()
@@ -87,5 +62,33 @@ void Game::DrawFrame()
         {
             brick.Draw(window);
         }
+    }
+}
+
+void Game::CheckBricksToDestroy(Ball& ball)
+{
+    int index = 0;
+    float min = 100;
+    int toDestroy = -1;
+    for (auto& brick : bricks)
+    {
+        if (!brick.IsDestroyed())
+        {
+            if (brick.CheckBallCollision(ball))
+            {
+                float distance = brick.GetDistance(ball);
+                if (distance < min)
+                {
+                    min = distance;
+                    toDestroy = index;
+                }
+            }
+        }
+        index++;
+    }
+    if (toDestroy > -1)
+    {
+        bricks[toDestroy].Destroy();
+        sound.Play(sound.brickfilePath);
     }
 }
