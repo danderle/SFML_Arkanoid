@@ -1,6 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include "Ball.h"
+#include "Board.h"
 
 class Paddle
 {
@@ -11,21 +11,21 @@ public:
 	void Draw(sf::RenderWindow& wnd);
 	sf::Vector2f GetPosition() const;
 	void SetOuterPaddlePosition(sf::Vector2f& curPos);
-	bool CheckBallCollision(Ball& ball);
+	void CheckWallCollision(Board& brd);
+	bool Intersects(sf::FloatRect rect);
 
 private: 
 	void SetInnerPaddlePosition(const sf::Vector2f outerPos);
 
 public:
-	static constexpr float Width = 250;
-	static constexpr float Height = 60;
+	static constexpr float Width = 250.f;
+	static constexpr float Height = 60.f;
 
 private:
 	sf::RectangleShape outerPad;
 	sf::RectangleShape innerPad;
 
-	static constexpr float speed = 400;
-	
+	static constexpr float speed = 400.f;
 
 	const sf::Color outerBckgrd = sf::Color::Cyan;
 	const sf::Color innerBckgrd = sf::Color::Red;

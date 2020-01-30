@@ -1,7 +1,5 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include "Ball.h"
-#include "Paddle.h"
 
 class Board
 {
@@ -10,14 +8,15 @@ public:
 	Board(const float width, const float height);
 
 	void Draw(sf::RenderWindow& wnd);
-	bool CheckWallCollision(Ball& ball);
-	void CheckWallCollision(Paddle& paddle);
+	bool Contains(sf::Vector2f position);
 
 public:
 	static constexpr float Padding = 15;
 	const float LeftBoundry;
 	const float RightBoundry;
-	
+	const float TopBoundry;
+	const float BottomBoundry;
+
 private:
 	sf::RectangleShape background;
 	

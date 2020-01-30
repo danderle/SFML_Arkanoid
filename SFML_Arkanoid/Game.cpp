@@ -24,9 +24,10 @@ void Game::Go()
         window.clear();
         auto dt = clock.restart();
         auto elapsedTime = dt.asSeconds();
+        float fith = elapsedTime / 5.f;
         while (elapsedTime > 0)
         {
-            float step = std::min(0.0025f, elapsedTime);
+            float step = std::min(fith, elapsedTime);
             UpdateModel(step);
             elapsedTime -= step;
         }
@@ -38,13 +39,13 @@ void Game::Go()
 void Game::UpdateModel(float timeStep)
 {
     ball.Update(timeStep);
-    if (board.CheckWallCollision(ball))
+    if (ball.CheckWallCollison(board))
     {
         sound.Play(sound.brickfilePath);
     }
     paddle.Update(keybrd, timeStep);
-    board.CheckWallCollision(paddle);
-    if (paddle.CheckBallCollision(ball))
+    paddle.CheckWallCollision(board);
+    if (ball.CheckPaddleCollision(paddle, timeStep))
     {
         sound.Play(sound.padfilePath);
     }
@@ -74,9 +75,9 @@ void Game::CheckBricksToDestroy(Ball& ball)
     {
         if (!brick.IsDestroyed())
         {
-            if (brick.CheckBallCollision(ball))
+            if (ball.CheckBrickCollision(brick))
             {
-                float distance = brick.GetDistance(ball);
+                float distance = ball.GetDistance(brick.GetCenter());
                 if (distance < min)
                 {
                     min = distance;

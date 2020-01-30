@@ -1,6 +1,5 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include "Ball.h"
 
 class Brick
 {
@@ -9,11 +8,12 @@ public:
 	Brick(const sf::Vector2f position, sf::Color color);
 
 	void Draw(sf::RenderWindow& wnd);
-	bool CheckBallCollision(Ball& ball);
+	
 	void Destroy();
 	bool IsDestroyed() const;
-	float GetDistance(Ball& ball) const;
+	sf::Vector2f GetPosition() const;
 	sf::Vector2f GetCenter() const;
+	bool Intersects(sf::FloatRect rect);
 
 public:
 	static constexpr float Width = 90;

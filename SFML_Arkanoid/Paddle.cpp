@@ -42,75 +42,20 @@ void Paddle::SetOuterPaddlePosition(sf::Vector2f& curPos)
 	SetInnerPaddlePosition(curPos);
 }
 
-bool Paddle::CheckBallCollision(Ball& ball)
+void Paddle::CheckWallCollision(Board& brd)
 {
-	bool ballCollision = false;
-	if (outerPad.getGlobalBounds().intersects(ball.GetRect()))
-	{
-		ballCollision = true;
-		auto ballCenter = ball.GetCenter();
-		auto paddlePos = outerPad.getPosition();
-		auto ballVel = ball.GetVelocity();
-		float y = ballVel.y > 0 ? paddlePos.y - Ball::Diameter : paddlePos.y + Height;
-		float x = ballVel.x > 0 ? paddlePos.x - Ball::Diameter : paddlePos.x + Width;
-		if (ballCenter.x > paddlePos.x && ballCenter.x < paddlePos.x + Width)
-		{
-			ball.ResetY(y);
-			ball.ReboundY();
-		}
-		else if (ballCenter.y > paddlePos.y && ballCenter.y < paddlePos.y + Height)
-		{
-			ball.ResetX(x); 
-			ball.ReboundX();
-		}
-		else if(ballVel.y > 0)
-		{
-			float x;
-			float y;
-			if (ballCenter.x < paddlePos.x)
-			{
-				x = std::abs(paddlePos.x - ballCenter.x);
-				y = std::abs(paddlePos.y - ballCenter.y);
-			}
-			else
-			{
-				x = std::abs(paddlePos.x + Width - ballCenter.x);
-				y = std::abs(paddlePos.y - ballCenter.y);
-			}
-			if (x <= y)
-			{
-				ball.ReboundY();
-			}
-			else
-			{
-				ball.ReboundX();
-			}
-		}
-		else if (ballVel.y < 0)
-		{
-			float x;
-			float y;
-			if (ballCenter.x < paddlePos.x)
-			{
-				x = std::abs(paddlePos.x - ballCenter.x);
-				y = std::abs(paddlePos.y + Height - ballCenter.y);
-			}
-			else
-			{
-				x = std::abs(paddlePos.x + Width - ballCenter.x);
-				y = std::abs(paddlePos.y + Height - ballCenter.y);
-			}
-			if (x <= y)
-			{
-				ball.ReboundY();
-			}
-			else
-			{
-				ball.ReboundX();
-			}
-		}
-	}
-	return ballCollision;
+	auto curPos = GetPosition();
+	if (curPos.x < brd.LeftBoundry)
+		curPos.x = brd.LeftBoundry;
+	else if (curPos.x + Paddle::Width > brd.RightBoundry)
+		curPos.x = brd.RightBoundry - Paddle::Width;
+
+	SetOuterPaddlePosition(curPos);
+}
+
+bool Paddle::Intersects(sf::FloatRect rect)
+{
+	return outerPad.getGlobalBounds().intersects(rect);;
 }
 
 

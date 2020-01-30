@@ -1,5 +1,16 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include "Board.h"
+#include "Paddle.h"
+#include "Brick.h"
+
+enum class Hit
+{
+	NONE,
+	WALL,
+	BRICK,
+	PADDLE,
+};
 
 class Ball
 {
@@ -9,21 +20,27 @@ public:
 
 	void Update(float dt);
 	void Draw(sf::RenderWindow& wnd);
-	void DoWallCollision(const sf::Vector2i vel, const sf::Vector2f pos);
+	bool CheckWallCollison(Board& brd);
+	bool CheckPaddleCollision(Paddle& pdl, float timeStep);
+	bool CheckBrickCollision(Brick& brk);
+	void DoCollision(const sf::Vector2i vel, const sf::Vector2f pos);
 	sf::Vector2f GetPosition() const;
 	sf::Vector2f GetCenter() const;
 	sf::FloatRect GetRect() const;
 	sf::Vector2i GetVelocity() const;
+	float GetDistance(sf::Vector2f pos) const;
 	void ResetX(const float x);
 	void ResetY(const float y);
 	void ReboundX();
 	void ReboundY();
-
+	bool LastHitPaddle() const;
 private:
 	sf::CircleShape circle;
 	sf::Vector2i velocity;
 
 	sf::Color background = sf::Color::Yellow;
+
+	Hit LastHit = Hit::NONE;
 
 	static constexpr float speed = 500;
 	static constexpr float outlineThickness = -5;

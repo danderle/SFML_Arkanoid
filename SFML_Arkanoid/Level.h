@@ -6,10 +6,8 @@
 class Level
 {
 public:
-	Level() = default;
+	Level() = delete;
 
 	static std::vector<Brick> Create(int level);
-private:
-
 };
 
