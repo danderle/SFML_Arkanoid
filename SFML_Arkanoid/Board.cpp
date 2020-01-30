@@ -2,9 +2,9 @@
 
 Board::Board(const float width, const float height)
 	:
-	width(width),
-	height(height),
-	background({width - 2* Padding, height - 2* Padding })
+	background({width - 2* Padding, height - 2* Padding }),
+	LeftBoundry(Padding),
+	RightBoundry(width - Padding)
 {
 	background.setFillColor(backgroundFill);
 	background.setOutlineThickness(Padding);
@@ -59,10 +59,10 @@ bool Board::CheckWallCollision(Ball& ball)
 void Board::CheckWallCollision(Paddle& paddle)
 {
 	auto curPos = paddle.GetPosition();
-	if (curPos.x - Padding < 0)
-		curPos.x = Padding;
-	else if (curPos.x + Paddle::Width + Padding > width)
-		curPos.x = width - Board::Padding - Paddle::Width;
+	if (curPos.x < LeftBoundry)
+		curPos.x = LeftBoundry;
+	else if (curPos.x + Paddle::Width > RightBoundry)
+		curPos.x = RightBoundry - Paddle::Width;
 	
 	paddle.SetOuterPaddlePosition(curPos);
 }

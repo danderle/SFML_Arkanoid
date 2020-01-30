@@ -15,11 +15,12 @@ public:
 
 public:
 	static constexpr float Padding = 15;
+	const float LeftBoundry;
+	const float RightBoundry;
 	
 private:
 	sf::RectangleShape background;
-	float width;
-	float height;
-	sf::Color backgroundFill = sf::Color::Transparent;
+	
+	const sf::Color backgroundFill = sf::Color::Transparent;
 };
 

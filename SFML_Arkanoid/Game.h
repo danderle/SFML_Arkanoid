@@ -5,6 +5,7 @@
 #include "Ball.h"
 #include "Paddle.h"
 #include "Sound.h"
+#include "Brick.h"
 
 class Game
 {
@@ -17,7 +18,7 @@ public:
 	void DrawFrame();
 
 public:
-	static constexpr int WndWidth = 1000;
+	static constexpr int WndWidth = 1020;
 	static constexpr int WndHeight = 900;
 
 private:
@@ -26,6 +27,9 @@ private:
 	Ball ball;
 	Paddle paddle;
 	Sound sound;
+
+	std::vector<Brick> bricks;
+
 	sf::Keyboard keybrd;
 	sf::Clock clock;
 };
