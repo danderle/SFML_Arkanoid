@@ -3,7 +3,7 @@
 Ball::Ball(const sf::Vector2f pos)
 	:
 	circle({Radius}),
-	velocity(1,-1)
+	velocity(1.f,-1.f)
 {
 	circle.setPosition(pos);
 	circle.setFillColor(background);
@@ -34,7 +34,7 @@ bool Ball::CheckWallCollison(Board& brd)
 	sf::Vector2f bottomBallPos(pos.x + Radius + Board::Padding, pos.y + Diameter + Board::Padding);
 	sf::Vector2f rightBallPos(pos.x + Diameter + Board::Padding, pos.y + Radius + Board::Padding);
 
-	sf::Vector2i vel(1, 1);
+	sf::Vector2f vel(1.f, 1.f);
 	if (!brd.Contains(LeftBallPos))
 	{
 		vel.x *= -1;
@@ -75,14 +75,28 @@ bool Ball::CheckPaddleCollision(Paddle& pdl, float timeStep)
 			auto ballCenter = GetCenter();
 			auto paddlePos = pdl.GetPosition();
 			auto ballVel = GetVelocity();
-			float y = ballVel.y > 0 ? paddlePos.y - Ball::Diameter : paddlePos.y + Paddle::Height;
+			auto innerRange = pdl.GetInnerRange();
+			auto middleRange = pdl.GetMiddleRange();
 			float x = ballVel.x > 0 ? paddlePos.x - Ball::Diameter : paddlePos.x + Paddle::Width;
 			if (ballCenter.x > paddlePos.x&& ballCenter.x < paddlePos.x + Paddle::Width)
 			{
-				ResetY(y);
-				ReboundY();
+				if (ballCenter.x > innerRange.x&& ballCenter.x < innerRange.y)
+				{
+					ResetVelocityX(0.5f);
+					ReboundY();
+				}
+				else if (ballCenter.x > middleRange.x&& ballCenter.x < middleRange.y)
+				{
+					ResetVelocityX(0.7f);
+					ReboundY();
+				}
+				else
+				{
+					ResetVelocityX(1.f);
+					ReboundY();
+				}
 			}
-			else if (ballCenter.y > paddlePos.y&& ballCenter.y < paddlePos.y + Paddle::Height)
+			else if (ballCenter.y > paddlePos.y && ballCenter.y < paddlePos.y + Paddle::Height)
 			{
 				ResetX(x);
 				ReboundX();
@@ -209,7 +223,7 @@ bool Ball::CheckBrickCollision(Brick& brk)
 	return ballCollision;
 }
 
-void Ball::DoCollision(const sf::Vector2i vel, const sf::Vector2f pos)
+void Ball::DoCollision(const sf::Vector2f vel, const sf::Vector2f pos)
 {
 	velocity.x *= vel.x;
 	velocity.y *= vel.y;
@@ -232,7 +246,7 @@ sf::FloatRect Ball::GetRect() const
 	return circle.getGlobalBounds();
 }
 
-sf::Vector2i Ball::GetVelocity() const
+sf::Vector2f Ball::GetVelocity() const
 {
 	return velocity;
 }
@@ -243,6 +257,15 @@ float Ball::GetDistance(sf::Vector2f pos) const
 	float x = std::abs(ballcenter.x - pos.x);
 	float y = std::abs(ballcenter.y - pos.y);
 	return std::sqrt(x * x + y * y);
+}
+
+void Ball::ResetVelocityX(const float x)
+{
+	int sign = 1;
+	if (velocity.x < 0)
+		sign *= -1;
+	velocity.x = x * sign;
+	NormalizeVelocity();
 }
 
 void Ball::ResetX(const float x)
@@ -268,4 +291,13 @@ void Ball::ReboundY()
 bool Ball::LastHitPaddle() const
 {
 	return LastHit == Hit::PADDLE;
+}
+
+void Ball::NormalizeVelocity()
+{
+	float x = velocity.x * velocity.x;
+	float y = velocity.y * velocity.y;
+	float length = std::sqrt(x + y);
+	velocity.x /= length;
+	velocity.y /= length;
 }

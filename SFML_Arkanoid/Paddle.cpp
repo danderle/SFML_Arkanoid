@@ -58,6 +58,30 @@ bool Paddle::Intersects(sf::FloatRect rect)
 	return outerPad.getGlobalBounds().intersects(rect);;
 }
 
+sf::Vector2f Paddle::GetCenter() const
+{
+	auto pos = outerPad.getPosition();
+	pos.x += Width / 2;
+	pos.y += Height / 2;
+	return pos;
+}
+
+sf::Vector2f Paddle::GetInnerRange() const
+{
+	auto range = GetCenter();
+	range.y = range.x + Width * 1.f / 3.f / 2.f;
+	range.x -= Width * 1.f / 3.f / 2.f;
+	return range;
+}
+
+sf::Vector2f Paddle::GetMiddleRange() const
+{
+	auto range = GetCenter();
+	range.y = range.x + Width * 2.f / 3.f / 2.f;
+	range.x -= Width * 2.f / 3.f / 2.f;
+	return range;
+}
+
 
 //// Private Methods
 

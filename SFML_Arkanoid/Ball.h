@@ -23,20 +23,25 @@ public:
 	bool CheckWallCollison(Board& brd);
 	bool CheckPaddleCollision(Paddle& pdl, float timeStep);
 	bool CheckBrickCollision(Brick& brk);
-	void DoCollision(const sf::Vector2i vel, const sf::Vector2f pos);
+	void DoCollision(const sf::Vector2f vel, const sf::Vector2f pos);
 	sf::Vector2f GetPosition() const;
 	sf::Vector2f GetCenter() const;
 	sf::FloatRect GetRect() const;
-	sf::Vector2i GetVelocity() const;
+	sf::Vector2f GetVelocity() const;
 	float GetDistance(sf::Vector2f pos) const;
+	void ResetVelocityX(const float x);
 	void ResetX(const float x);
 	void ResetY(const float y);
 	void ReboundX();
 	void ReboundY();
 	bool LastHitPaddle() const;
+
+private:
+	void NormalizeVelocity();
+
 private:
 	sf::CircleShape circle;
-	sf::Vector2i velocity;
+	sf::Vector2f velocity;
 
 	sf::Color background = sf::Color::Yellow;
 

@@ -13,7 +13,9 @@ public:
 	void SetOuterPaddlePosition(sf::Vector2f& curPos);
 	void CheckWallCollision(Board& brd);
 	bool Intersects(sf::FloatRect rect);
-
+	sf::Vector2f GetCenter() const;
+	sf::Vector2f GetInnerRange() const;
+	sf::Vector2f GetMiddleRange() const;
 private: 
 	void SetInnerPaddlePosition(const sf::Vector2f outerPos);
 
