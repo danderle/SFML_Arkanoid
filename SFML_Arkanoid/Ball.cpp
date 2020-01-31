@@ -79,32 +79,32 @@ bool Ball::CheckPaddleCollision(Paddle& pdl, float timeStep)
 			auto ballVel = GetVelocity();
 			auto innerRange = pdl.GetInnerRange();
 			auto middleRange = pdl.GetMiddleRange();
-			float x = ballVel.x > 0 ? paddlePos.x - Ball::Diameter : paddlePos.x + Paddle::Width;
-			float y = ballVel.y > 0 ? paddlePos.y - Ball::Diameter: paddlePos.y + Paddle::Height;
+			float xReset = ballVel.x > 0 ? paddlePos.x - Ball::Diameter : paddlePos.x + Paddle::Width;
+			float yReset = ballVel.y > 0 ? paddlePos.y - Ball::Diameter: paddlePos.y + Paddle::Height;
 			if (ballCenter.x > paddlePos.x && ballCenter.x < paddlePos.x + Paddle::Width)
 			{
 				if (ballCenter.x > innerRange.x && ballCenter.x < innerRange.y)
 				{
 					ResetVelocityX(0.5f);
-					ResetY(y);
+					ResetY(yReset);
 					ReboundY();
 				}
 				else if (ballCenter.x > middleRange.x && ballCenter.x < middleRange.y)
 				{
 					ResetVelocityX(0.7f);
-					ResetY(y);
+					ResetY(yReset);
 					ReboundY();
 				}
 				else
 				{
 					ResetVelocityX(1.f);
-					ResetY(y);
+					ResetY(yReset);
 					ReboundY();
 				}
 			}
 			else if (ballCenter.y > paddlePos.y && ballCenter.y < paddlePos.y + Paddle::Height)
 			{
-				ResetX(x);
+				ResetX(xReset);
 				ReboundX();
 			}
 			else
@@ -123,10 +123,12 @@ bool Ball::CheckPaddleCollision(Paddle& pdl, float timeStep)
 				}
 				if (x <= y)
 				{
+					ResetY(yReset);
 					ReboundY();
 				}
 				else
 				{
+					ResetX(xReset);
 					ReboundX();
 				}
 			}
@@ -148,12 +150,12 @@ bool Ball::CheckBrickCollision(Brick& brk)
 		auto ballVel = GetVelocity();
 		float yReset = ballVel.y > 0 ? brickPos.y - Ball::Diameter : brickPos.y + Brick::Height;
 		float xReset = ballVel.x > 0 ? brickPos.x - Ball::Diameter : brickPos.x + Brick::Width;
-		if (ballCenter.x > brickPos.x&& ballCenter.x < brickPos.x + Brick::Width)
+		if (ballCenter.x > brickPos.x && ballCenter.x < brickPos.x + Brick::Width)
 		{
 			ResetY(yReset);
 			ReboundY();
 		}
-		else if (ballCenter.y > brickPos.y&& ballCenter.y < brickPos.y + Brick::Height)
+		else if (ballCenter.y > brickPos.y && ballCenter.y < brickPos.y + Brick::Height)
 		{
 			ResetX(xReset);
 			ReboundX();
@@ -199,10 +201,12 @@ bool Ball::CheckBrickCollision(Brick& brk)
 			}
 			if (x <= y)
 			{
+				ResetY(yReset);
 				ReboundY();
 			}
 			else
 			{
+				ResetX(xReset);
 				ReboundX();
 			}
 		}
