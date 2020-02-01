@@ -147,9 +147,10 @@ bool Ball::CheckBrickCollision(Brick& brk)
 		lastHit = Hit::BRICK;
 		auto ballCenter = GetCenter();
 		auto brickPos = brk.GetPosition();
+		auto brickCenter = brk.GetCenter();
 		auto ballVel = GetVelocity();
-		float yReset = ballVel.y > 0 ? brickPos.y - Ball::Diameter : brickPos.y + Brick::Height;
-		float xReset = ballVel.x > 0 ? brickPos.x - Ball::Diameter : brickPos.x + Brick::Width;
+		float xReset = ballCenter.x < brickCenter.x ? brickPos.x - Ball::Diameter : brickPos.x + Brick::Width;
+		float yReset = ballCenter.y < brickCenter.y ? brickPos.y - Ball::Diameter : brickPos.y + Brick::Height;
 		if (ballCenter.x > brickPos.x && ballCenter.x < brickPos.x + Brick::Width)
 		{
 			ResetY(yReset);
@@ -185,7 +186,7 @@ bool Ball::CheckBrickCollision(Brick& brk)
 				ReboundX();
 			}
 		}
-		else if (ballVel.y < 0)
+		else
 		{
 			float x;
 			float y;

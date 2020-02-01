@@ -7,7 +7,7 @@ Game::Game(const std::string& title)
     ball({ (float)WndWidth / 2, (float)WndHeight * (4.f / 5.f) }),
     paddle(WndWidth, WndHeight)
 {
-    bricks = Level::Create(1);
+    bricks = Level::Create(2);
 }
 
 void Game::Go()
