@@ -30,10 +30,10 @@ bool Ball::CheckWallCollison(Board& brd)
 {
 	bool collision = true;
 	auto pos = GetPosition();
-	sf::Vector2f leftBallPos(pos.x - Board::Padding, pos.y + Ball::Radius - Board::Padding);
-	sf::Vector2f topBallPos(pos.x + Radius - Board::Padding, pos.y - Board::Padding);
-	sf::Vector2f bottomBallPos(pos.x + Radius + Board::Padding, pos.y + Diameter + Board::Padding);
-	sf::Vector2f rightBallPos(pos.x + Diameter + Board::Padding, pos.y + Radius + Board::Padding);
+	sf::Vector2f leftBallPos(pos.x - Board::BorderThickness, pos.y);
+	sf::Vector2f topBallPos(pos.x, pos.y - Board::BorderThickness);
+	sf::Vector2f bottomBallPos(pos.x, pos.y + Diameter + Board::BorderThickness);
+	sf::Vector2f rightBallPos(pos.x + Diameter + Board::BorderThickness, pos.y);
 
 	sf::Vector2f vel(1.f, 1.f);
 	if (!brd.Contains(leftBallPos))

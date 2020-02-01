@@ -12,8 +12,8 @@ std::vector<Brick> Level::Create(int level)
         sf::Color color(255, 0, 0);
         for (int i = 0; i < 66; i++)
         {
-            float x = (i * (int)Brick::Width) % 990 + Board::Padding;
-            if (x == Board::Padding)
+            float x = (i * (int)Brick::Width) % 990 + Board::LeftPadding;
+            if (x == Board::LeftPadding)
             {
                 yStep++;
                 if (yStep == 1)
@@ -35,8 +35,8 @@ std::vector<Brick> Level::Create(int level)
         sf::Color color(255, 0, 0);
         for (int i = 0; i < 60; i++)
         {
-            float x = (i * (int)Brick::Width) % 900 + Board::Padding + 45;
-            if (x == Board::Padding + 45)
+            float x = (i * (int)Brick::Width) % 900 + Board::LeftPadding + 45;
+            if (x == Board::LeftPadding + 45)
             {
                 yStep++;
                 if (yStep == 1)

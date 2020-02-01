@@ -11,7 +11,11 @@ public:
 	bool Contains(sf::Vector2f position);
 
 public:
-	static constexpr float Padding = 15;
+	static constexpr float LeftPadding = 15;
+	static constexpr float RightPadding = 15;
+	static constexpr float TopPadding = 15 * 5;
+	static constexpr float BottomPadding = 15;
+	static constexpr float BorderThickness = 15;
 	const float LeftBoundry;
 	const float RightBoundry;
 	const float TopBoundry;

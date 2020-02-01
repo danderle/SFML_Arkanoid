@@ -5,7 +5,7 @@ Paddle::Paddle(const int wndWidth, const int wndHeight)
 	outerPad({ Width, Height }),
 	innerPad({ Width * (3.f/4.f), Height })
 {
-	outerPad.setPosition({ (float)wndWidth / 2 - Width / 2,  (float)wndHeight * 5/6 });
+	outerPad.setPosition({ (float)wndWidth / 2 - Width / 2,  (float)wndHeight * 6/7 });
 	SetInnerPaddlePosition(outerPad.getPosition());
 	outerPad.setFillColor(outerBckgrd);
 	innerPad.setFillColor(innerBckgrd);

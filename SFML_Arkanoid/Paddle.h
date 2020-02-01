@@ -21,7 +21,7 @@ private:
 
 public:
 	static constexpr float Width = 250.f;
-	static constexpr float Height = 60.f;
+	static constexpr float Height = 30.f;
 
 private:
 	sf::RectangleShape outerPad;
