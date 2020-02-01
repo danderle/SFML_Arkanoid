@@ -5,6 +5,7 @@ Ball::Ball(const sf::Vector2f pos)
 	circle({Radius}),
 	velocity(1.f,-1.f)
 {
+	NormalizeVelocity();
 	circle.setPosition(pos);
 	circle.setFillColor(background);
 	circle.setOutlineThickness(outlineThickness);
@@ -27,7 +28,7 @@ void Ball::Draw(sf::RenderWindow& wnd)
 
 bool Ball::CheckWallCollison(Board& brd)
 {
-	bool collision = false;
+	bool collision = true;
 	auto pos = GetPosition();
 	sf::Vector2f leftBallPos(pos.x - Board::Padding, pos.y + Ball::Radius - Board::Padding);
 	sf::Vector2f topBallPos(pos.x + Radius - Board::Padding, pos.y - Board::Padding);
@@ -37,31 +38,29 @@ bool Ball::CheckWallCollison(Board& brd)
 	sf::Vector2f vel(1.f, 1.f);
 	if (!brd.Contains(leftBallPos))
 	{
-		vel.x *= -1;
-		pos.x = brd.LeftBoundry + 1;
+		ResetX(brd.LeftBoundry + 1);
+		ReboundX();
 	}
 	else if (!brd.Contains(topBallPos))
 	{
-		vel.y *= -1;
-		pos.y = brd.TopBoundry + 1;
+		ResetY(brd.TopBoundry + 1);
+		ReboundY();
 	}
 	else if (!brd.Contains(bottomBallPos))
 	{
-		vel.y *= -1;
-		pos.y = brd.BottomBoundry - Diameter - 1;
+		ResetY(brd.BottomBoundry - Diameter - 1);
+		ReboundY();
 	}
 	else if (!brd.Contains(rightBallPos))
 	{
-		vel.x *= -1;
-		pos.x = brd.RightBoundry - Diameter -1;
+		ResetX(brd.RightBoundry - Diameter -1);
+		ReboundX();
 	}
-
-	if (vel.x == -1 || vel.y == -1)
+	else
 	{
-		DoCollision(vel, pos);
-		collision = true;
-		LastHit = Hit::WALL;
+		collision = false;
 	}
+	lastHit = collision ? Hit::WALL : lastHit;
 	return collision;
 }
 
@@ -73,14 +72,15 @@ bool Ball::CheckPaddleCollision(Paddle& pdl, float timeStep)
 		if (pdl.Intersects(GetRect()))
 		{
 			ballCollision = true;
-			LastHit = Hit::PADDLE;
+			lastHit = Hit::PADDLE;
 			auto ballCenter = GetCenter();
 			auto paddlePos = pdl.GetPosition();
 			auto ballVel = GetVelocity();
 			auto innerRange = pdl.GetInnerRange();
 			auto middleRange = pdl.GetMiddleRange();
-			float xReset = ballVel.x > 0 ? paddlePos.x - Ball::Diameter : paddlePos.x + Paddle::Width;
-			float yReset = ballVel.y > 0 ? paddlePos.y - Ball::Diameter: paddlePos.y + Paddle::Height;
+			auto pdlCenter = pdl.GetCenter();
+			float xReset = ballCenter.x < pdlCenter.x ? paddlePos.x - Ball::Diameter - 1 : paddlePos.x + Paddle::Width + 1;
+			float yReset = ballCenter.y < pdlCenter.y ? paddlePos.y - Ball::Diameter - 1: paddlePos.y + Paddle::Height + 1;
 			if (ballCenter.x > paddlePos.x && ballCenter.x < paddlePos.x + Paddle::Width)
 			{
 				if (ballCenter.x > innerRange.x && ballCenter.x < innerRange.y)
@@ -123,6 +123,7 @@ bool Ball::CheckPaddleCollision(Paddle& pdl, float timeStep)
 				}
 				if (x <= y)
 				{
+					ResetVelocityX(1.f);
 					ResetY(yReset);
 					ReboundY();
 				}
@@ -132,7 +133,6 @@ bool Ball::CheckPaddleCollision(Paddle& pdl, float timeStep)
 					ReboundX();
 				}
 			}
-			
 		}
 	}
 	return ballCollision;
@@ -144,7 +144,7 @@ bool Ball::CheckBrickCollision(Brick& brk)
 	if (brk.Intersects(GetRect()))
 	{
 		ballCollision = true;
-		LastHit = Hit::BRICK;
+		lastHit = Hit::BRICK;
 		auto ballCenter = GetCenter();
 		auto brickPos = brk.GetPosition();
 		auto ballVel = GetVelocity();
@@ -281,7 +281,7 @@ void Ball::ReboundY()
 
 bool Ball::LastHitPaddle() const
 {
-	return LastHit == Hit::PADDLE;
+	return lastHit == Hit::PADDLE;
 }
 
 void Ball::NormalizeVelocity()

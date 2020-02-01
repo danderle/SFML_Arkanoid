@@ -45,7 +45,7 @@ private:
 
 	sf::Color background = sf::Color::Yellow;
 
-	Hit LastHit = Hit::NONE;
+	Hit lastHit = Hit::NONE;
 
 	static constexpr float speed = 500;
 	static constexpr float outlineThickness = -5;
