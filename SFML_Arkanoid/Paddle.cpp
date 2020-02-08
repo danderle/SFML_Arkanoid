@@ -9,6 +9,7 @@ Paddle::Paddle(const int wndWidth, const int wndHeight)
 	SetInnerPaddlePosition(outerPad.getPosition());
 	outerPad.setFillColor(outerBckgrd);
 	innerPad.setFillColor(innerBckgrd);
+
 }
 
 void Paddle::Update(sf::Keyboard kbd, const float dt)
@@ -82,6 +83,27 @@ sf::Vector2f Paddle::GetMiddleRange() const
 	return range;
 }
 
+void Paddle::DrawLives(sf::RenderWindow& wnd, sf::Vector2f textboxPos)
+{
+	int space = 15;
+	float divisor = 3;
+	for (int i = 0; i < lives; i++)
+	{
+		sf::RectangleShape outer({ Width / divisor, Height / divisor });
+		sf::RectangleShape inner({ Width / divisor * 3 / 4, Height / divisor });
+		float x = textboxPos.x + space + i * outer.getGlobalBounds().width;
+		outer.setPosition(x, textboxPos.y - outer.getGlobalBounds().height / 2);
+		auto outerPos = outer.getPosition();
+		float xinner = outerPos.x + outer.getGlobalBounds().width / 2;
+		xinner -= inner.getGlobalBounds().width / 2;
+		inner.setPosition(xinner, outerPos.y);
+		outer.setFillColor(outerBckgrd);
+		inner.setFillColor(innerBckgrd);
+		wnd.draw(outer);
+		wnd.draw(inner);
+		space += 15;
+	}
+}
 
 //// Private Methods
 

@@ -16,6 +16,8 @@ public:
 	sf::Vector2f GetCenter() const;
 	sf::Vector2f GetInnerRange() const;
 	sf::Vector2f GetMiddleRange() const;
+	void DrawLives(sf::RenderWindow& wnd, sf::Vector2f textboxPosition);
+
 private: 
 	void SetInnerPaddlePosition(const sf::Vector2f outerPos);
 
@@ -27,6 +29,7 @@ private:
 	sf::RectangleShape outerPad;
 	sf::RectangleShape innerPad;
 
+	int lives = 3;
 	static constexpr float speed = 400.f;
 
 	const sf::Color outerBckgrd = sf::Color::Cyan;

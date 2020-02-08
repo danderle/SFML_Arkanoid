@@ -5,7 +5,8 @@ Game::Game(const std::string& title)
 	window(sf::VideoMode(WndWidth, WndHeight), title),
     board((float)WndWidth, (float)WndHeight),
     ball({ (float)WndWidth / 2, (float)WndHeight * (4.f / 5.f) }),
-    paddle(WndWidth, WndHeight)
+    paddle(WndWidth, WndHeight),
+    lives("Lives: ", {10, board.TopBoundry / 2 - board.BorderThickness}, 10)
 {
 }
 
@@ -53,9 +54,11 @@ void Game::UpdateModel(float timeStep)
 
 void Game::DrawFrame()
 {
+    lives.Draw(window);
     board.Draw(window);
     ball.Draw(window);
     paddle.Draw(window);
+    paddle.DrawLives(window, lives.GetRighSideCenterline());
     for (auto& brick : bricks)
     {
         if (!brick.IsDestroyed())

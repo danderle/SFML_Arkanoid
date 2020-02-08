@@ -7,6 +7,7 @@
 #include "Sound.h"
 #include "Brick.h"
 #include "Level.h"
+#include "TextBox.h"
 
 class Game
 {
@@ -30,6 +31,7 @@ private:
 	Board board;
 	Ball ball;
 	Paddle paddle;
+	TextBox lives;
 	Sound sound;
 
 	std::vector<Brick> bricks;
