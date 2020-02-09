@@ -4,10 +4,14 @@ Game::Game(const std::string& title)
 	: 
 	window(sf::VideoMode(WndWidth, WndHeight), title),
     board((float)WndWidth, (float)WndHeight),
-    ball({ (float)WndWidth / 2, (float)WndHeight * (4.f / 5.f) }),
     paddle(WndWidth, WndHeight),
-    lives("Lives: ", {10, board.TopBoundry / 2 - board.BorderThickness}, 10)
+    ball({ paddle.GetCenter().x - Ball::Radius, paddle.GetPosition().y - Ball::Diameter }),
+    lives("Lives", {5, 0}, 15, sf::Color::Green),
+    gameOver("           Game Over\n"
+             "Press Enter to restart", { (float)WndWidth / 2, (float)WndHeight / 2}, 20, sf::Color::Red)
 {
+    SetTextBoxes();
+    bricks = Level::Create(board, level);
 }
 
 void Game::Go()
@@ -19,6 +23,25 @@ void Game::Go()
         {
             if (event.type == sf::Event::Closed)
                 window.close();
+            else if (event.type == sf::Event::KeyPressed)
+            {
+                if (keybrd.isKeyPressed(sf::Keyboard::Space))
+                {
+                    if (!paddle.GameOver())
+                    {
+                        ball.StartMotion();
+                    }
+                }
+                else if (keybrd.isKeyPressed(sf::Keyboard::Enter))
+                {
+                    if (paddle.GameOver())
+                    {
+                        auto size = window.getSize();
+                        paddle.Reset(size);
+                        bricks = Level::Create(board, 1);
+                    }
+                }
+            }
         }
 
         window.clear();
@@ -39,6 +62,7 @@ void Game::Go()
 void Game::UpdateModel(float timeStep)
 {
     ball.Update(timeStep);
+    ball.Update(paddle);
     if (ball.CheckWallCollison(board))
     {
         sound.Play(sound.brickfilePath);
@@ -50,12 +74,18 @@ void Game::UpdateModel(float timeStep)
         sound.Play(sound.padfilePath);
     }
     CheckBricksToDestroy(ball);
+    if (bricks.empty())
+    {
+        ball.StopMotion();
+        bricks = Level::Create(board, level);
+        level++;
+    }
 }
 
 void Game::DrawFrame()
 {
-    lives.Draw(window);
     board.Draw(window);
+    lives.Draw(window);
     ball.Draw(window);
     paddle.Draw(window);
     paddle.DrawLives(window, lives.GetRighSideCenterline());
@@ -66,7 +96,13 @@ void Game::DrawFrame()
             brick.Draw(window);
         }
     }
+    if (paddle.GameOver())
+    {
+        gameOver.Draw(window);
+        bricks.clear();
+    }
 }
+
 
 void Game::CheckBricksToDestroy(Ball& ball)
 {
@@ -94,4 +130,15 @@ void Game::CheckBricksToDestroy(Ball& ball)
         bricks[toDestroy].Destroy();
         sound.Play(sound.brickfilePath);
     }
+}
+
+void Game::SetTextBoxes()
+{
+    auto pos = lives.GetPosition();
+    auto height = lives.GetHeight();
+    lives.SetPosition({ pos.x, board.TopBoundry / 2 - height / 2 - Board::BorderThickness / 2});
+    pos = gameOver.GetPosition();
+    auto width = gameOver.GetWidth();
+    height = gameOver.GetHeight();
+    gameOver.SetPosition({ (float)WndWidth / 2 - width / 2, (float)WndHeight / 2 - height / 2 });
 }

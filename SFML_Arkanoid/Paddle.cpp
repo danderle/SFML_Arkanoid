@@ -105,6 +105,23 @@ void Paddle::DrawLives(sf::RenderWindow& wnd, sf::Vector2f textboxPos)
 	}
 }
 
+void Paddle::SubtractLife(int minusLife)
+{
+	lives -= minusLife;
+}
+
+bool Paddle::GameOver() const
+{
+	return lives <= 0;
+}
+
+void Paddle::Reset(sf::Vector2u wndSize)
+{
+	outerPad.setPosition({ (float)wndSize.x / 2 - Width / 2,  (float)wndSize.y * 6/7 });
+	SetInnerPaddlePosition(outerPad.getPosition());
+	lives = 3;
+}
+
 //// Private Methods
 
 void Paddle::SetInnerPaddlePosition(const sf::Vector2f outerPos)

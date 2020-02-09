@@ -3,7 +3,7 @@
 Ball::Ball(const sf::Vector2f pos)
 	:
 	circle({Radius}),
-	velocity(1.f,-1.f)
+	velocity(0.5f, -1.f)
 {
 	NormalizeVelocity();
 	circle.setPosition(pos);
@@ -13,12 +13,28 @@ Ball::Ball(const sf::Vector2f pos)
 
 void Ball::Update(float dt)
 {
-	float x = dt * speed * velocity.x;
-	float y = dt * speed * velocity.y;
-	auto curPos = circle.getPosition();
-	curPos.x += x;
-	curPos.y += y;
-	circle.setPosition(curPos);
+	if (inMotion)
+	{
+		float x = dt * speed * velocity.x;
+		float y = dt * speed * velocity.y;
+		auto curPos = circle.getPosition();
+		curPos.x += x;
+		curPos.y += y;
+		circle.setPosition(curPos);
+	}
+}
+
+void Ball::Update(Paddle& pdl)
+{
+	if (!inMotion)
+	{
+		auto pos = circle.getPosition();
+		pos.x = pdl.GetCenter().x - Radius;
+		pos.y = pdl.GetPosition().y - Diameter;
+		circle.setPosition(pos);
+		pdl.SubtractLife(minusLife);
+		minusLife = 0;
+	}
 }
 
 void Ball::Draw(sf::RenderWindow& wnd)
@@ -48,8 +64,16 @@ bool Ball::CheckWallCollison(Board& brd)
 	}
 	else if (!brd.Contains(bottomBallPos))
 	{
-		ResetY(brd.BottomBoundry - Diameter - 1);
-		ReboundY();
+		if (inMotion)
+		{
+			inMotion = false;
+			minusLife = 1;
+		}
+		else
+		{
+			ResetY(brd.BottomBoundry - Diameter - 1);
+			ReboundY();
+		}
 	}
 	else if (!brd.Contains(rightBallPos))
 	{
@@ -283,6 +307,21 @@ void Ball::ReboundY()
 bool Ball::LastHitPaddle() const
 {
 	return lastHit == Hit::PADDLE;
+}
+
+void Ball::StartMotion()
+{
+	inMotion = true;
+}
+
+void Ball::StopMotion()
+{
+	inMotion = false;
+}
+
+bool Ball::InMotion() const
+{
+	return inMotion;
 }
 
 void Ball::NormalizeVelocity()

@@ -8,6 +8,6 @@ class Level
 public:
 	Level() = delete;
 
-	static std::vector<Brick> Create(int level);
+	static std::vector<Brick> Create(Board& brd, const int level);
 };
 

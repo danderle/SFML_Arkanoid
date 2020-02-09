@@ -21,6 +21,7 @@ public:
 
 private:
 	void CheckBricksToDestroy(Ball& ball);
+	void SetTextBoxes();
 
 public:
 	static constexpr int WndWidth = 1020;
@@ -29,14 +30,18 @@ public:
 private:
 	sf::RenderWindow window;
 	Board board;
-	Ball ball;
 	Paddle paddle;
+	Ball ball;
 	TextBox lives;
+	TextBox gameOver;
 	Sound sound;
 
 	std::vector<Brick> bricks;
 
 	sf::Keyboard keybrd;
 	sf::Clock clock;
+
+	bool gameStarted = false;
+	int level = 1;
 };
 

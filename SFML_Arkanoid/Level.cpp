@@ -1,6 +1,6 @@
 #include "Level.h"
 
-std::vector<Brick> Level::Create(int level)
+std::vector<Brick> Level::Create(Board& brd, const int level)
 {
     std::vector<Brick> bricks;
 
@@ -12,8 +12,8 @@ std::vector<Brick> Level::Create(int level)
         sf::Color color(255, 0, 0);
         for (int i = 0; i < 66; i++)
         {
-            float x = (i * (int)Brick::Width) % 990 + Board::LeftPadding;
-            if (x == Board::LeftPadding)
+            float x = (i * (int)Brick::Width) % 990 + brd.LeftBoundry;
+            if (x == brd.LeftBoundry)
             {
                 yStep++;
                 if (yStep == 1)
@@ -25,7 +25,7 @@ std::vector<Brick> Level::Create(int level)
                     color = sf::Color::Yellow;
                 }
             }
-            float y = yStep * Brick::Height + 60;
+            float y = yStep * Brick::Height + brd.TopBoundry;
             bricks.push_back({ {x,y}, color });
         }
     }
@@ -35,8 +35,8 @@ std::vector<Brick> Level::Create(int level)
         sf::Color color(255, 0, 0);
         for (int i = 0; i < 60; i++)
         {
-            float x = (i * (int)Brick::Width) % 900 + Board::LeftPadding + 45;
-            if (x == Board::LeftPadding + 45)
+            float x = (i * (int)Brick::Width) % 900 + brd.LeftBoundry + 45;
+            if (x == brd.LeftBoundry + 45)
             {
                 yStep++;
                 if (yStep == 1)
@@ -48,7 +48,7 @@ std::vector<Brick> Level::Create(int level)
                     color = sf::Color::Yellow;
                 }
             }
-            float y = yStep * Brick::Height + 60;
+            float y = yStep * Brick::Height + brd.TopBoundry + 60;
             bricks.push_back({ {x,y}, color });
         }
     }

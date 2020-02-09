@@ -17,6 +17,9 @@ public:
 	sf::Vector2f GetInnerRange() const;
 	sf::Vector2f GetMiddleRange() const;
 	void DrawLives(sf::RenderWindow& wnd, sf::Vector2f textboxPosition);
+	void SubtractLife(int minusLife);
+	bool GameOver() const;
+	void Reset(sf::Vector2u wndSize);
 
 private: 
 	void SetInnerPaddlePosition(const sf::Vector2f outerPos);

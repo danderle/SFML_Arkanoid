@@ -19,6 +19,7 @@ public:
 	Ball(const sf::Vector2f pos);
 
 	void Update(float dt);
+	void Update(Paddle& pdl);
 	void Draw(sf::RenderWindow& wnd);
 	bool CheckWallCollison(Board& brd);
 	bool CheckPaddleCollision(Paddle& pdl, float timeStep);
@@ -35,6 +36,9 @@ public:
 	void ReboundX();
 	void ReboundY();
 	bool LastHitPaddle() const;
+	void StartMotion();
+	void StopMotion();
+	bool InMotion() const;
 
 private:
 	void NormalizeVelocity();
@@ -49,9 +53,10 @@ private:
 
 	static constexpr float speed = 500;
 	static constexpr float outlineThickness = -5;
-
+	bool inMotion = false;
+	int minusLife = 0;
 public:
-	static constexpr float Radius = 8;
+	static constexpr float Radius = 10;
 	static constexpr float Diameter = Radius *2;
 };
 
